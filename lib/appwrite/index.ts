@@ -1,4 +1,5 @@
-import { Account, Avatars, Client, Databases, Storage } from 'node-appwrite'
+'use server'
+import { Account, Avatars, Client, TablesDB, Storage } from 'node-appwrite'
 import { appwriteConfig } from '@/lib/appwrite/config'
 import { cookies } from 'next/headers'
 
@@ -6,40 +7,40 @@ export const createSessionClient = async () => {
   const client = new Client()
     .setEndpoint(appwriteConfig.endpointUrl)
     .setProject(appwriteConfig.projectId)
-  const session = (await cookies()).get('appwrite-session')
-  if (!session || session.value) {
-    throw new Error('Session not found')
-  }
-  client.setSession(session.value)
+  // const session = (await cookies()).get('appwrite-session')
+  // if (!session || session.value) {
+  //   throw new Error('Session not found')
+  // }
+  // client.setSession(session.value)
 
   return {
     get account() {
       return new Account(client)
     },
-    get database() {
-      return new Databases(client)
+    get tables() {
+      return new TablesDB(client)
     },
   }
 }
 
-export const createAdminClient = async () => {
-  const client = new Client()
-    .setEndpoint(appwriteConfig.endpointUrl)
-    .setProject(appwriteConfig.projectId)
-    .setKey(appwriteConfig.secretKey)
-
-  return {
-    get account() {
-      return new Account(client)
-    },
-    get database() {
-      return new Databases(client)
-    },
-    get storage() {
-      return new Storage(client)
-    },
-    get avatars() {
-      return new Avatars(client)
-    },
-  }
-}
+// export const createAdminClient = async () => {
+//   const client = new Client()
+//     .setEndpoint(appwriteConfig.endpointUrl)
+//     .setProject(appwriteConfig.projectId)
+//     .setKey(appwriteConfig.secretKey)
+//
+//   return {
+//     get account() {
+//       return new Account(client)
+//     },
+//     get tables() {
+//       return new TablesDB(client)
+//     },
+//     get storage() {
+//       return new Storage(client)
+//     },
+//     get avatars() {
+//       return new Avatars(client)
+//     },
+//   }
+// }
