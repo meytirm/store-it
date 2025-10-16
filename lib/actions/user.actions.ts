@@ -1,9 +1,10 @@
 'use server'
 
-import { createSessionClient } from '@/lib/appwrite'
+import { createAdminClient, createSessionClient } from '@/lib/appwrite'
 import { appwriteConfig } from '@/lib/appwrite/config'
 import { Query, ID } from 'node-appwrite'
 import { parseStringify } from '@/lib/utils'
+import { cookies } from 'next/headers'
 
 interface createAccountParams {
   email: string
@@ -26,7 +27,7 @@ const handleError = (error: unknown, message: string) => {
   console.log(error, message)
   throw error
 }
-const sendEmailOTP = async ({
+export const sendEmailOTP = async ({
   email,
 }: Omit<createAccountParams, 'fullName'>) => {
   const { account } = await createSessionClient()
@@ -74,4 +75,31 @@ export const createAccount = async ({
   }
 
   return parseStringify({ accountId })
+}
+
+export const verifySecret = async ({
+  accountId,
+  password,
+}: {
+  accountId: string
+  password: string
+}) => {
+  const { account } = await createSessionClient()
+  const session = await account.createSession({
+    userId: accountId,
+    secret: password,
+  })
+
+  await cookies()
+    .then((c) =>
+      c.set('appwrite-session', session.secret, {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: true,
+      }),
+    )
+    .catch((e) => console.log(e))
+
+  return parseStringify({ sessionId: session.$id })
 }

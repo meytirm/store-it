@@ -7,11 +7,10 @@ export const createSessionClient = async () => {
   const client = new Client()
     .setEndpoint(appwriteConfig.endpointUrl)
     .setProject(appwriteConfig.projectId)
-  // const session = (await cookies()).get('appwrite-session')
-  // if (!session || session.value) {
-  //   throw new Error('Session not found')
-  // }
-  // client.setSession(session.value)
+  const session = (await cookies()).get('appwrite-session')
+  if (session) {
+    client.setSession(session.value)
+  }
 
   return {
     get account() {
@@ -23,24 +22,24 @@ export const createSessionClient = async () => {
   }
 }
 
-// export const createAdminClient = async () => {
-//   const client = new Client()
-//     .setEndpoint(appwriteConfig.endpointUrl)
-//     .setProject(appwriteConfig.projectId)
-//     .setKey(appwriteConfig.secretKey)
-//
-//   return {
-//     get account() {
-//       return new Account(client)
-//     },
-//     get tables() {
-//       return new TablesDB(client)
-//     },
-//     get storage() {
-//       return new Storage(client)
-//     },
-//     get avatars() {
-//       return new Avatars(client)
-//     },
-//   }
-// }
+export const createAdminClient = async () => {
+  const client = new Client()
+    .setEndpoint(appwriteConfig.endpointUrl)
+    .setProject(appwriteConfig.projectId)
+    .setKey(appwriteConfig.secretKey)
+
+  return {
+    get account() {
+      return new Account(client)
+    },
+    get tables() {
+      return new TablesDB(client)
+    },
+    get storage() {
+      return new Storage(client)
+    },
+    get avatars() {
+      return new Avatars(client)
+    },
+  }
+}
