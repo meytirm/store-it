@@ -4,6 +4,7 @@ import { createAdminClient, createSessionClient } from '@/lib/appwrite'
 import { appwriteConfig } from '@/lib/appwrite/config'
 import { Query, ID } from 'node-appwrite'
 import { parseStringify } from '@/lib/utils'
+import { avatarPlaceholderUrl } from '@/constants'
 import { cookies } from 'next/headers'
 
 interface createAccountParams {
@@ -12,7 +13,7 @@ interface createAccountParams {
 }
 
 const getUserByEmail = async (email: string) => {
-  const { tables } = await createSessionClient()
+  const { tables } = await createAdminClient()
 
   const result = await tables.listRows({
     databaseId: appwriteConfig.databaseId,
@@ -30,7 +31,7 @@ const handleError = (error: unknown, message: string) => {
 export const sendEmailOTP = async ({
   email,
 }: Omit<createAccountParams, 'fullName'>) => {
-  const { account } = await createSessionClient()
+  const { account } = await createAdminClient()
 
   try {
     const session = await account.createEmailToken({
@@ -58,7 +59,7 @@ export const createAccount = async ({
   }
 
   if (!existingUser) {
-    const { tables } = await createSessionClient()
+    const { tables } = await createAdminClient()
     console.log('here')
 
     await tables.createRow({
@@ -68,7 +69,7 @@ export const createAccount = async ({
       data: {
         email,
         fullName,
-        avatar: '',
+        avatar: avatarPlaceholderUrl,
         accountId,
       },
     })
@@ -102,4 +103,21 @@ export const verifySecret = async ({
     .catch((e) => console.log(e))
 
   return parseStringify({ sessionId: session.$id })
+}
+
+export const getCurrentUser = async () => {
+  const { account, tables } = await createSessionClient()
+  const result = await account.get()
+
+  const user = await tables.listRows({
+    databaseId: appwriteConfig.databaseId,
+    tableId: 'users',
+    queries: [Query.equal('accountId', result.$id)],
+  })
+
+  if (user.total <= 0) {
+    return null
+  }
+
+  return parseStringify(user.rows[0])
 }
