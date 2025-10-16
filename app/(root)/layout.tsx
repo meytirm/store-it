@@ -1,11 +1,21 @@
 import { ReactNode } from 'react'
+import Sidebar from '@/components/Sidebar'
+import MobileNavigation from '@/components/MobileNavigation'
+import Header from '@/components/Header'
+import { getCurrentUser } from '@/lib/actions/user.actions'
+import { redirect } from 'next/navigation'
 
-function Layout({ children }: Props) {
+async function Layout({ children }: Props) {
+  const currentUser = await getCurrentUser()
+  if (!currentUser) {
+    return redirect('/sign-in')
+  }
   return (
     <main className="flex h-screen">
-      Sidebar
+      <Sidebar />
       <section className="flex h-full flex-1 flex-col">
-        MobileNavigation Header
+        <MobileNavigation />
+        <Header />
         <div className="main-content">{children}</div>
       </section>
     </main>
