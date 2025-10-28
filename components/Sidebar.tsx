@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { avatarPlaceholderUrl, navItems } from '@/constants'
+import { navItems } from '@/constants'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
-function Sidebar() {
+function Sidebar({ fullName, email, avatar }: Props) {
   const pathname = usePathname()
   return (
     <aside className="sidebar">
@@ -66,19 +66,25 @@ function Sidebar() {
       />
       <div className="sidebar-user-info">
         <Image
-          src={avatarPlaceholderUrl}
+          src={avatar}
           alt="Avatar"
           width={44}
           height={44}
           className="sidebar-user-avatar"
         />
-        {/*<div className="hidden lg:block">*/}
-        {/*  <div className="subtitle-2 capitalize">{fullName}</div>*/}
-        {/*  <div className="caption">{email}</div>*/}
-        {/*</div>*/}
+        <div className="hidden lg:block">
+          <div className="subtitle-2 capitalize">{fullName}</div>
+          <div className="caption">{email}</div>
+        </div>
       </div>
     </aside>
   )
 }
 
 export default Sidebar
+
+interface Props {
+  fullName: string
+  email: string
+  avatar: string
+}
