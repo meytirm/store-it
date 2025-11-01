@@ -39,6 +39,8 @@ function OTPModal({ email, accountId }: Props) {
       }
     } catch (error) {
       console.log('Field to verify OTP', error)
+    } finally {
+      setLoading(false)
     }
   }
 
