@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { createAccount } from '@/lib/actions/user.actions'
+import { createAccount, signInUser } from '@/lib/actions/user.actions'
 import OTPModal from '@/components/OTPModal'
 
 const authFormSchema = (formType: FormType) => {
@@ -48,10 +48,13 @@ function AuthForm({ type }: Props) {
     setIsLoading(true)
     setErrorMessage('')
     try {
-      const user = await createAccount({
-        fullName: values.fullName || '',
-        email: values.email,
-      })
+      const user =
+        type === 'sign-up'
+          ? await createAccount({
+              fullName: values.fullName || '',
+              email: values.email,
+            })
+          : await signInUser({ email: values.email })
       setAccountId(user.accountId)
     } catch {
       setErrorMessage('Failed to create account')
@@ -138,7 +141,7 @@ function AuthForm({ type }: Props) {
               href={type === 'sign-in' ? '/sign-up' : '/sign-in'}
               className="ml-1 font-medium text-brand"
             >
-              {type === 'sign-in' ? 'Sign In' : 'Sign Up'}
+              {type === 'sign-up' ? 'Sign In' : 'Sign Up'}
             </Link>
           </div>
         </form>
