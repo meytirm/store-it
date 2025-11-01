@@ -6,6 +6,7 @@ import { Query, ID } from 'node-appwrite'
 import { parseStringify } from '@/lib/utils'
 import { avatarPlaceholderUrl } from '@/constants'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 interface createAccountParams {
   email: string
@@ -119,4 +120,17 @@ export const getCurrentUser = async () => {
   }
 
   return parseStringify(user.rows[0])
+}
+
+export const signOutUser = async () => {
+  const { account } = await createSessionClient()
+  try {
+    await account.deleteSession({ sessionId: 'current' })
+    const cookiesMethods = await cookies()
+    cookiesMethods.delete('appwrite-session')
+  } catch (e) {
+    handleError(e, 'Failed to sign out user')
+  } finally {
+    redirect('/sign-in')
+  }
 }
