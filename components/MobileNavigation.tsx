@@ -15,6 +15,7 @@ import { navItems } from '@/constants'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { signOutUser } from '@/lib/actions/user.actions'
 
 function MobileNavigation({
   avatar,
@@ -42,10 +43,6 @@ function MobileNavigation({
             width={30}
             height={30}
           />
-          <div className="sm:hidden lg:block">
-            <p className="subtitle-2 capitalize">{fullName}</p>
-            <p className="caption">{email}</p>
-          </div>
         </SheetTrigger>
         <SheetContent className="shad-sheet h-screen px-3">
           <SheetHeader>
@@ -100,7 +97,7 @@ function MobileNavigation({
               <Button
                 type="submit"
                 className="mobile-sign-out-button"
-                onClick={() => {}}
+                onClick={async () => await signOutUser()}
               >
                 <Image
                   src="/assets/icons/logout.svg"
