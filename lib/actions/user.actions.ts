@@ -53,15 +53,12 @@ export const createAccount = async ({
 
   const accountId = await sendEmailOTP({ email })
 
-  console.log('he***', accountId)
-
   if (!accountId) {
     throw new Error('Failed to send OTP')
   }
 
   if (!existingUser) {
     const { tables } = await createAdminClient()
-    console.log('here')
 
     await tables.createRow({
       databaseId: appwriteConfig.databaseId,
@@ -142,9 +139,9 @@ export const signOutUser = async () => {
 export const signInUser = async ({ email }: { email: string }) => {
   try {
     const existingUser = await getUserByEmail(email)
+    const accountId = await sendEmailOTP({ email })
     if (existingUser) {
-      await sendEmailOTP({ email })
-      return parseStringify({ accountId: existingUser.$id })
+      return parseStringify({ accountId })
     }
     return parseStringify({ accountId: null, error: 'User not found' })
   } catch (e) {
