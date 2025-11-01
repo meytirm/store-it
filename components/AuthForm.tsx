@@ -138,7 +138,7 @@ function AuthForm({ type }: Props) {
               href={type === 'sign-in' ? '/sign-up' : '/sign-in'}
               className="ml-1 font-medium text-brand"
             >
-              {type === 'sign-in' ? 'Sign In' : 'Sign Up'}
+              {type === 'sign-up' ? 'Sign In' : 'Sign Up'}
             </Link>
           </div>
         </form>
