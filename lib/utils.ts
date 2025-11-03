@@ -66,3 +66,5 @@ export function getFileType(fileName: string) {
     extension,
   }
 }
+
+export const convertFileToUrl = (file: File) => URL.createObjectURL(file)
