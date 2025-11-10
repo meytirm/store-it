@@ -20,7 +20,7 @@ import FileUploader from '@/components/FileUploader'
 
 function MobileNavigation({
   avatar,
-  ownerId,
+  $id: ownerId,
   accountId,
   fullName,
   email,
@@ -120,7 +120,7 @@ export default MobileNavigation
 
 interface Props {
   avatar: string
-  ownerId: string
+  $id: string
   accountId: string
   fullName: string
   email: string
