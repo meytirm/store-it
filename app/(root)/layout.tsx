@@ -16,7 +16,7 @@ async function Layout({ children }: Props) {
       <Sidebar {...currentUser} />
       <section className="flex h-full flex-1 flex-col">
         <MobileNavigation {...currentUser} />
-        <Header />
+        <Header {...currentUser} />
         <div className="main-content">{children}</div>
       </section>
 
