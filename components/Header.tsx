@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { signOutUser } from '@/lib/actions/user.actions'
 import FileUploader from '@/components/FileUploader'
 
-function Header({ ownerId, accountId }: Props) {
+function Header({ $id: ownerId, accountId }: Props) {
   return (
     <header className="header">
       Search
@@ -33,6 +33,6 @@ function Header({ ownerId, accountId }: Props) {
 export default Header
 
 interface Props {
-  ownerId: string
+  $id: string
   accountId: string
 }
