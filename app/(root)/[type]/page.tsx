@@ -1,6 +1,7 @@
 import { FileInterface, SearchParamProps } from '@/types'
 import Sort from '@/components/Sort'
 import { getFiles } from '@/lib/actions/file.actions'
+import FileCard from '@/components/FileCard'
 
 async function Page({ params }: SearchParamProps) {
   const type = ((await params)?.type as string) || ''
@@ -24,11 +25,9 @@ async function Page({ params }: SearchParamProps) {
       </section>
 
       {files.total > 0 ? (
-        <section>
+        <section className="file-list">
           {files.rows.map((file: FileInterface) => (
-            <h1 className="h1" key={file.$id}>
-              {file.name}
-            </h1>
+            <FileCard key={file.$id} file={file} />
           ))}
         </section>
       ) : (
