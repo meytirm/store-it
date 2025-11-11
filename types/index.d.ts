@@ -1,3 +1,5 @@
+import { Models } from 'node-appwrite'
+
 export interface UploadFileParams {
   file: File
   ownerId: string
@@ -10,7 +12,13 @@ declare interface SearchParamProps {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export interface FileInterface {
+export interface FileInterface extends Models.Row {
   name: string
-  $id: string
+  url: string
+  type: string
+  extension: string
+  size: number
+  owner: {
+    fullName: string
+  }
 }
