@@ -1,8 +1,11 @@
-import { SearchParamProps } from '@/types'
+import { FileInterface, SearchParamProps } from '@/types'
 import Sort from '@/components/Sort'
+import { getFiles } from '@/lib/actions/file.actions'
 
 async function Page({ params }: SearchParamProps) {
   const type = ((await params)?.type as string) || ''
+
+  const files = await getFiles()
   return (
     <div className="page-container">
       <section className="w-full">
@@ -19,6 +22,18 @@ async function Page({ params }: SearchParamProps) {
           </div>
         </div>
       </section>
+
+      {files.total > 0 ? (
+        <section>
+          {files.rows.map((file: FileInterface) => (
+            <h1 className="h1" key={file.$id}>
+              {file.name}
+            </h1>
+          ))}
+        </section>
+      ) : (
+        <p className="empty-list">No files uploaded</p>
+      )}
     </div>
   )
 }
