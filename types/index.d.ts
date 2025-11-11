@@ -4,3 +4,13 @@ export interface UploadFileParams {
   accountId: string
   path: string
 }
+
+declare interface SearchParamProps {
+  params?: Promise<SegmentParams>
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export interface FileInterface {
+  name: string
+  $id: string
+}
