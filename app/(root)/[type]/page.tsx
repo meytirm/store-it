@@ -1,4 +1,5 @@
 import { SearchParamProps } from '@/types'
+import Sort from '@/components/Sort'
 
 async function Page({ params }: SearchParamProps) {
   const type = ((await params)?.type as string) || ''
@@ -11,6 +12,11 @@ async function Page({ params }: SearchParamProps) {
           <p className="body-1">
             Total size: <span className="h5">0 MB</span>
           </p>
+
+          <div className="sort-container">
+            <p className="body-1 hidden sm:block text-light-200">Sort By:</p>
+            <Sort />
+          </div>
         </div>
       </section>
     </div>
