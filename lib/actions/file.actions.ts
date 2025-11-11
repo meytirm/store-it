@@ -15,6 +15,7 @@ const handleError = (error: unknown, message: string) => {
 
 const createQueries = (currentUser: Models.User) => {
   const queries = [
+    Query.select(['*', 'owner.*']),
     Query.or([
       Query.equal('owner', [currentUser.$id]),
       Query.contains('users', [currentUser.email]),
@@ -92,7 +93,7 @@ export const getFiles = async () => {
       tableId: 'files',
       queries,
     })
-    console.log(files)
+
     return parseStringify(files)
   } catch (e) {
     handleError(e, 'Failed to get files')
