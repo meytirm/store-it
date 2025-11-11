@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { signOutUser } from '@/lib/actions/user.actions'
+import FileUploader from '@/components/FileUploader'
 
-function Header() {
+function Header({ $id: ownerId, accountId }: Props) {
   return (
     <header className="header">
       Search
       <div className="header-wrapper">
-        fileUploaders
+        <FileUploader ownerId={ownerId} accountId={accountId} />
         <form
           action={async () => {
             'use server'
@@ -30,3 +31,8 @@ function Header() {
 }
 
 export default Header
+
+interface Props {
+  $id: string
+  accountId: string
+}

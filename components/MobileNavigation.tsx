@@ -16,10 +16,11 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { signOutUser } from '@/lib/actions/user.actions'
+import FileUploader from '@/components/FileUploader'
 
 function MobileNavigation({
   avatar,
-  ownerId,
+  $id: ownerId,
   accountId,
   fullName,
   email,
@@ -93,7 +94,7 @@ function MobileNavigation({
             </nav>
             <Separator className="my-5 bg-light-200/20" />
             <div className="flex flex-col justify-between gap-5 pb-5">
-              FileUploader
+              <FileUploader ownerId={ownerId} accountId={accountId} />
               <Button
                 type="submit"
                 className="mobile-sign-out-button"
@@ -119,7 +120,7 @@ export default MobileNavigation
 
 interface Props {
   avatar: string
-  ownerId: string
+  $id: string
   accountId: string
   fullName: string
   email: string
