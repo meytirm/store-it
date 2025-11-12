@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
@@ -21,12 +22,23 @@ import Image from 'next/image'
 import { actionsDropdownItems } from '@/constants'
 import Link from 'next/link'
 import { constructDownloadUrl } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import Loading from '@/components/Loading'
 
 function ActionDropdown({ file }: { file: FileInterface }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [action, setAction] = useState<ActionType | null>(null)
   const [name, setName] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const closeAllModals = () => {
+    setIsModalOpen(false)
+    setIsDropdownOpen(false)
+    setAction(null)
+    setName(file.name)
+  }
+
+  const handleAction = () => {}
 
   const renderDialogContent = () => {
     if (!action) return null
@@ -45,6 +57,17 @@ function ActionDropdown({ file }: { file: FileInterface }) {
             />
           )}
         </DialogHeader>
+        {['rename', 'delete', 'share'].includes(value) && (
+          <DialogFooter className="flex flex-col gap-3 md:flex-row">
+            <Button onClick={closeAllModals} className="modal-cancel-button">
+              Cancel
+            </Button>
+            <Button onClick={handleAction} className="modal-submit-button">
+              <p className="capitalize">{value}</p>
+              <Loading isLoading={isLoading} />
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     )
   }
@@ -71,17 +94,15 @@ function ActionDropdown({ file }: { file: FileInterface }) {
               className="shad-dropdown-item"
               onClick={() => {
                 setAction(item)
-                if (action) {
-                  const isAllowed = [
-                    'rename',
-                    'delete',
-                    'share',
-                    'details',
-                  ].includes(action.value)
-
-                  if (isAllowed) {
-                    setIsModalOpen(true)
-                  }
+                const isAllowed = [
+                  'rename',
+                  'delete',
+                  'share',
+                  'details',
+                ].includes(item.value)
+                if (isAllowed) {
+                  // setName(file.name)
+                  setIsModalOpen(true)
                 }
               }}
             >
