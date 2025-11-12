@@ -1,7 +1,12 @@
 'use client'
-
 import { ActionType, FileInterface } from '@/types'
-import { Dialog } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 
 import {
   DropdownMenu,
@@ -21,6 +26,28 @@ function ActionDropdown({ file }: { file: FileInterface }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [action, setAction] = useState<ActionType | null>(null)
+  const [name, setName] = useState('')
+
+  const renderDialogContent = () => {
+    if (!action) return null
+    const { value, label } = action
+    return (
+      <DialogContent className="shad-dialog button">
+        <DialogHeader className="flex flex-col gap-3">
+          <DialogTitle className="text-center text-light-100">
+            {label}
+          </DialogTitle>
+          {value === 'rename' && (
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          )}
+        </DialogHeader>
+      </DialogContent>
+    )
+  }
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -87,6 +114,7 @@ function ActionDropdown({ file }: { file: FileInterface }) {
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
+      {renderDialogContent()}
     </Dialog>
   )
 }
