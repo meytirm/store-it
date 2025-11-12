@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Thumbnail from '@/components/Thumbnail'
 import { convertFileSize } from '@/lib/utils'
 import FormattedDateTime from '@/components/FormattedDateTime'
+import ActionDropdown from '@/components/ActionDropdown'
 
 function FileCard({ file }: { file: FileInterface }) {
   return (
@@ -17,7 +18,7 @@ function FileCard({ file }: { file: FileInterface }) {
         />
 
         <div className="flex flex-col items-end justify-between">
-          ActionDropdown...
+          <ActionDropdown file={file} />
           <p className="body-1">{convertFileSize(file.size)}</p>
         </div>
       </div>
