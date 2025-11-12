@@ -18,6 +18,7 @@ export interface FileInterface extends Models.Row {
   type: string
   extension: string
   size: number
+  bucketFileId: string
   owner: {
     fullName: string
   }
