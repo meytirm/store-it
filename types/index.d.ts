@@ -7,7 +7,7 @@ export interface UploadFileParams {
   path: string
 }
 
-declare interface SearchParamProps {
+export interface SearchParamProps {
   params?: Promise<SegmentParams>
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
 }
@@ -21,4 +21,10 @@ export interface FileInterface extends Models.Row {
   owner: {
     fullName: string
   }
+}
+
+export interface ActionType {
+  label: string
+  icon: string
+  value: string
 }
