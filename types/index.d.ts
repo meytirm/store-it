@@ -29,3 +29,10 @@ export interface ActionType {
   icon: string
   value: string
 }
+
+export interface RenameFileProps {
+  fileId: string
+  name: string
+  extension: string
+  path: string
+}
