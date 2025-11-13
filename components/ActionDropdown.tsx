@@ -29,15 +29,25 @@ function ActionDropdown({ file }: { file: FileInterface }) {
   }
   const path = usePathname()
 
-  const handleAction = () => {
+  const handleAction = async () => {
     if (!action) return
     setIsLoading(true)
-    const success = false
+    let success = false
 
     const actions = {
       rename: () =>
         renameFile({ fileId: file.$id, name, extension: file.extension, path }),
+      share: () => console.log('share'),
+      delete: () => console.log('delete'),
     }
+
+    success = await actions[action.value as keyof typeof actions]()
+
+    if (success) {
+      closeAllModals()
+    }
+
+    setIsLoading(false)
   }
 
   const renderDialogContent = () => {
@@ -80,6 +90,7 @@ function ActionDropdown({ file }: { file: FileInterface }) {
         isDropdownOpen={isDropdownOpen}
         setIsDropdownOpen={setIsDropdownOpen}
         setIsModalOpen={setIsModalOpen}
+        setName={setName}
       />
       {renderDialogContent()}
     </Dialog>
