@@ -3,27 +3,17 @@ import { ActionType, FileInterface } from '@/types'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { useState } from 'react'
-import Image from 'next/image'
-import { actionsDropdownItems } from '@/constants'
-import Link from 'next/link'
-import { constructDownloadUrl } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import Loading from '@/components/Loading'
+import { renameFile } from '@/lib/actions/user.actions'
+import { usePathname } from 'next/navigation'
+import FileDropDownMenu from '@/components/FileDropDownMenu'
 
 function ActionDropdown({ file }: { file: FileInterface }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -37,8 +27,18 @@ function ActionDropdown({ file }: { file: FileInterface }) {
     setAction(null)
     setName(file.name)
   }
+  const path = usePathname()
 
-  const handleAction = () => {}
+  const handleAction = () => {
+    if (!action) return
+    setIsLoading(true)
+    const success = false
+
+    const actions = {
+      rename: () =>
+        renameFile({ fileId: file.$id, name, extension: file.extension, path }),
+    }
+  }
 
   const renderDialogContent = () => {
     if (!action) return null
@@ -74,67 +74,13 @@ function ActionDropdown({ file }: { file: FileInterface }) {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-        <DropdownMenuTrigger className="shad-no-focus">
-          <Image
-            src="/assets/icons/dots.svg"
-            alt="dots"
-            width={34}
-            height={34}
-          />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel className="max-w-[200px] truncate">
-            {file.name}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {actionsDropdownItems.map((item: ActionType) => (
-            <DropdownMenuItem
-              key={item.value}
-              className="shad-dropdown-item"
-              onClick={() => {
-                setAction(item)
-                const isAllowed = [
-                  'rename',
-                  'delete',
-                  'share',
-                  'details',
-                ].includes(item.value)
-                if (isAllowed) {
-                  // setName(file.name)
-                  setIsModalOpen(true)
-                }
-              }}
-            >
-              {item.value === 'download' ? (
-                <Link
-                  href={constructDownloadUrl(file.bucketFileId)}
-                  download={file.name}
-                  className="flex items-center gap-2"
-                >
-                  <Image
-                    src={item.icon}
-                    alt={item.label}
-                    width={30}
-                    height={30}
-                  />
-                  {item.label}
-                </Link>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <Image
-                    src={item.icon}
-                    alt={item.label}
-                    width={30}
-                    height={30}
-                  />
-                  {item.label}
-                </div>
-              )}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <FileDropDownMenu
+        file={file}
+        setAction={setAction}
+        isDropdownOpen={isDropdownOpen}
+        setIsDropdownOpen={setIsDropdownOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
       {renderDialogContent()}
     </Dialog>
   )
