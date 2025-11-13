@@ -18,6 +18,7 @@ function FileDropDownMenu({
   file,
   setAction,
   setIsModalOpen,
+  setName,
 }: Props) {
   return (
     <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
@@ -42,7 +43,7 @@ function FileDropDownMenu({
                 'details',
               ].includes(item.value)
               if (isAllowed) {
-                // setName(file.name)
+                setName(file.name)
                 setIsModalOpen(true)
               }
             }}
@@ -87,4 +88,5 @@ interface Props {
   file: FileInterface
   setAction: (action: ActionType) => void
   setIsModalOpen: (open: boolean) => void
+  setName: (name: string) => void
 }
