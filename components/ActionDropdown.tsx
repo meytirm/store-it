@@ -14,6 +14,7 @@ import Loading from '@/components/Loading'
 import { renameFile } from '@/lib/actions/user.actions'
 import { usePathname } from 'next/navigation'
 import FileDropDownMenu from '@/components/FileDropDownMenu'
+import { FileDetails } from '@/components/ActionsModalContent'
 
 function ActionDropdown({ file }: { file: FileInterface }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -66,6 +67,7 @@ function ActionDropdown({ file }: { file: FileInterface }) {
               onChange={(e) => setName(e.target.value)}
             />
           )}
+          {value === 'details' && <FileDetails file={file} />}
         </DialogHeader>
         {['rename', 'delete', 'share'].includes(value) && (
           <DialogFooter className="flex flex-col gap-3 md:flex-row">
