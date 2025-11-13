@@ -7,6 +7,8 @@ import { parseStringify } from '@/lib/utils'
 import { avatarPlaceholderUrl } from '@/constants'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { RenameFileProps } from '@/types'
+import { revalidatePath } from 'next/cache'
 
 interface createAccountParams {
   email: string
@@ -146,5 +148,28 @@ export const signInUser = async ({ email }: { email: string }) => {
     return parseStringify({ accountId: null, error: 'User not found' })
   } catch (e) {
     handleError(e, 'Failed to sign in user')
+  }
+}
+
+export const renameFile = async ({
+  fileId,
+  name,
+  extension,
+  path,
+}: RenameFileProps) => {
+  const { tables } = await createAdminClient()
+
+  try {
+    const newName = `${name}.${extension}`
+    const updatedFile = await tables.updateRow({
+      databaseId: appwriteConfig.databaseId,
+      tableId: 'files',
+      rowId: fileId,
+      data: { name: newName },
+    })
+    revalidatePath(path)
+    return parseStringify(updatedFile)
+  } catch (e) {
+    handleError(e, 'Failed to rename file')
   }
 }

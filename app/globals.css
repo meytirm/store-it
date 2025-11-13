@@ -197,6 +197,11 @@ body {
     @apply bg-white text-dark-200 min-h-screen;
 }
 
+input {
+    outline: none;
+    @apply rounded-lg border p-2;
+}
+
 button {
     cursor: pointer;
 }
@@ -461,11 +466,11 @@ button {
 }
 
 .modal-cancel-button {
-    @apply h-[52px] flex-1 rounded-full bg-white text-light-100 hover:bg-transparent!;
+    @apply h-[52px] flex-1 rounded-full bg-white text-light-100 hover:bg-transparent! shadow-lg;
 }
 
 .modal-submit-button {
-    @apply primary-btn !mx-0 h-[52px] w-full flex-1!;
+    @apply primary-btn !mx-0 h-[52px] w-full flex-1! shadow-lg;
 }
 
 /* ActionsModalContent */
