@@ -14,7 +14,7 @@ import Loading from '@/components/Loading'
 import { usePathname } from 'next/navigation'
 import FileDropDownMenu from '@/components/FileDropDownMenu'
 import { FileDetails, ShareInput } from '@/components/ActionsModalContent'
-import { renameFile } from '@/lib/actions/file.actions'
+import { renameFile, updateFileUsers } from '@/lib/actions/file.actions'
 
 function ActionDropdown({ file }: { file: FileInterface }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -39,7 +39,12 @@ function ActionDropdown({ file }: { file: FileInterface }) {
     const actions = {
       rename: () =>
         renameFile({ fileId: file.$id, name, extension: file.extension, path }),
-      share: () => console.log('share'),
+      share: () =>
+        updateFileUsers({
+          fileId: file.$id,
+          emails,
+          path,
+        }),
       delete: () => console.log('delete'),
     }
 
