@@ -22,6 +22,7 @@ export interface FileInterface extends Models.Row {
   owner: {
     fullName: string
   }
+  users: []
 }
 
 export interface ActionType {
