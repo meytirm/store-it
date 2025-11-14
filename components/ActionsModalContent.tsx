@@ -2,6 +2,10 @@ import { FileInterface } from '@/types'
 import Thumbnail from '@/components/Thumbnail'
 import FormattedDateTime from '@/components/FormattedDateTime'
 import { convertFileSize, formatDateTime } from '@/lib/utils'
+import { Dispatch, SetStateAction } from 'react'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 const ImageThumbnail = ({ file }: { file: FileInterface }) => (
   <div className="file-details-thumbnail">
@@ -32,4 +36,56 @@ export function FileDetails({ file }: { file: FileInterface }) {
       </div>
     </>
   )
+}
+
+export function ShareInput({ file, onInputChange, onRemove }: Props) {
+  return (
+    <>
+      <ImageThumbnail file={file} />
+      <div className="share-wrapper">
+        <p className="subtitle-2 pl-1 text-light-100">
+          Share file with other users
+        </p>
+        <Input
+          type="email"
+          placeholder="Enter email address"
+          onChange={(e) => onInputChange(e.target.value.trim().split(','))}
+          className="share-input-field"
+        />
+        <div className="pt-4">
+          <div className="flex justify-between">
+            <p className="subtitle-2 text-light-100">Share with</p>
+            <p className="subtitle-2 text-light-100">
+              {file.users.length} users
+            </p>
+          </div>
+          <ul className="pt-2">
+            {file.users.map((email) => (
+              <li
+                key={email}
+                className="flex items-center justify-between gap-2"
+              >
+                <p className="subtitle-2">{email}</p>
+                <Button onClick={() => onRemove(email)}>
+                  <Image
+                    src="/assets/icons/remove.svg"
+                    alt="Remove"
+                    width={24}
+                    height={24}
+                    className="remove-icon"
+                  />
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </>
+  )
+}
+
+interface Props {
+  file: FileInterface
+  onInputChange: Dispatch<SetStateAction<string[]>>
+  onRemove: (email: string) => void
 }
