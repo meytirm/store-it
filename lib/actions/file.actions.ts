@@ -7,13 +7,14 @@ import { ID, Models, Query } from 'node-appwrite'
 import { constructFileUrl, getFileType, parseStringify } from '@/lib/utils'
 import { revalidatePath } from 'next/cache'
 import { getCurrentUser } from '@/lib/actions/user.actions'
+import { FileType } from 'next/dist/lib/file-exists'
 
 const handleError = (error: unknown, message: string) => {
   console.log(error, message)
   throw error
 }
 
-const createQueries = (currentUser: Models.User) => {
+const createQueries = (currentUser: Models.User, types: string[]) => {
   const queries = [
     Query.select(['*', 'owner.*']),
     Query.or([
@@ -21,6 +22,10 @@ const createQueries = (currentUser: Models.User) => {
       Query.contains('users', [currentUser.email]),
     ]),
   ]
+
+  if (types.length > 0) {
+    queries.push(Query.equal('type', types))
+  }
 
   // TODO: Search, sort, limits...
 
@@ -77,7 +82,7 @@ export const uploadFile = async ({
   }
 }
 
-export const getFiles = async () => {
+export const getFiles = async ({ types = [] }: { types: FileType[] }) => {
   const { tables } = await createAdminClient()
 
   try {
@@ -86,7 +91,7 @@ export const getFiles = async () => {
       throw new Error('User not found')
     }
 
-    const queries = createQueries(currentUser)
+    const queries = createQueries(currentUser, types)
 
     const files = await tables.listRows({
       databaseId: appwriteConfig.databaseId,
