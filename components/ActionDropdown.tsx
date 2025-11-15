@@ -14,7 +14,11 @@ import Loading from '@/components/Loading'
 import { usePathname } from 'next/navigation'
 import FileDropDownMenu from '@/components/FileDropDownMenu'
 import { FileDetails, ShareInput } from '@/components/ActionsModalContent'
-import { renameFile, updateFileUsers } from '@/lib/actions/file.actions'
+import {
+  deleteFile,
+  renameFile,
+  updateFileUsers,
+} from '@/lib/actions/file.actions'
 
 function ActionDropdown({ file }: { file: FileInterface }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -45,7 +49,8 @@ function ActionDropdown({ file }: { file: FileInterface }) {
           emails,
           path,
         }),
-      delete: () => console.log('delete'),
+      delete: () =>
+        deleteFile({ fileId: file.$id, bucketFileId: file.bucketFileId, path }),
     }
 
     success = await actions[action.value as keyof typeof actions]()
