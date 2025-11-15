@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Input } from '@/components/ui/input'
-import { useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { getFiles } from '@/lib/actions/file.actions'
 import { FileInterface } from '@/types'
 import Thumbnail from '@/components/Thumbnail'
@@ -14,9 +14,16 @@ function Search() {
   const searchQuery = searchParms.get('query') || ''
   const [results, setResults] = useState<FileInterface[]>([])
   const [open, setOpen] = useState(false)
+  const router = useRouter()
+  const path = usePathname()
 
   useEffect(() => {
     const fetchFiles = async () => {
+      if (!query) {
+        setResults([])
+        setOpen(false)
+        return router.push(path.replace(searchParms.toString(), ''))
+      }
       const files = await getFiles({ searchText: query })
       setResults(files.rows)
       setOpen(true)
@@ -29,6 +36,13 @@ function Search() {
       setQuery('')
     }
   }, [searchQuery])
+
+  const handleClickItem = (file: FileInterface) => {
+    setOpen(false)
+    setResults([])
+
+    router.push(`/${file.type + 's'}?query=${query}`)
+  }
 
   return (
     <div className="search">
@@ -51,6 +65,7 @@ function Search() {
             {results.length > 0 ? (
               results.map((file: FileInterface) => (
                 <li
+                  onClick={() => handleClickItem(file)}
                   className="flex items-center justify-between"
                   key={file.$id}
                 >
