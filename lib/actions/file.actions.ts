@@ -14,7 +14,13 @@ const handleError = (error: unknown, message: string) => {
   throw error
 }
 
-const createQueries = (currentUser: Models.User, types: string[]) => {
+const createQueries = (
+  currentUser: Models.User,
+  types: string[],
+  searchText: string,
+  sort: string,
+  limit?: number,
+) => {
   const queries = [
     Query.select(['*', 'owner.*']),
     Query.or([
@@ -26,8 +32,18 @@ const createQueries = (currentUser: Models.User, types: string[]) => {
   if (types.length > 0) {
     queries.push(Query.equal('type', types))
   }
+  if (searchText) {
+    queries.push(Query.contains('name', searchText))
+  }
+  if (limit) {
+    queries.push(Query.limit(limit))
+  }
 
-  // TODO: Search, sort, limits...
+  const [sortBy, orderBy] = sort.split('-')
+
+  queries.push(
+    orderBy === 'asc' ? Query.orderAsc(sortBy) : Query.orderDesc(sortBy),
+  )
 
   return queries
 }
@@ -82,7 +98,17 @@ export const uploadFile = async ({
   }
 }
 
-export const getFiles = async ({ types = [] }: { types: FileType[] }) => {
+export const getFiles = async ({
+  types = [],
+  searchText = '',
+  sort = '$createdAt-desc',
+  limit = 10,
+}: {
+  types: FileType[]
+  searchText?: string
+  sort?: string
+  limit?: number
+}) => {
   const { tables } = await createAdminClient()
 
   try {
@@ -91,7 +117,7 @@ export const getFiles = async ({ types = [] }: { types: FileType[] }) => {
       throw new Error('User not found')
     }
 
-    const queries = createQueries(currentUser, types)
+    const queries = createQueries(currentUser, types, searchText, sort, limit)
 
     const files = await tables.listRows({
       databaseId: appwriteConfig.databaseId,
