@@ -21,8 +21,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <NextTopLoader color="#FA7275" />
       <body className={`${poppins.variable} font-poppins antialiased`}>
+        <NextTopLoader color="#FA7275" />
         {children}
       </body>
     </html>
