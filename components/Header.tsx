@@ -2,11 +2,12 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { signOutUser } from '@/lib/actions/user.actions'
 import FileUploader from '@/components/FileUploader'
+import Search from '@/components/Search'
 
 function Header({ $id: ownerId, accountId }: Props) {
   return (
     <header className="header">
-      Search
+      <Search />
       <div className="header-wrapper">
         <FileUploader ownerId={ownerId} accountId={accountId} />
         <form

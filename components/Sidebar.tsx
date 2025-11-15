@@ -33,7 +33,7 @@ function Sidebar({ fullName, email, avatar }: Props) {
           {navItems.map(({ url, name, icon }) => {
             const active = pathname === url
             return (
-              <Link href={name} key={url} className="lg:w-full">
+              <Link href={url} key={name} className="lg:w-full">
                 <li
                   className={cn(
                     'sidebar-nav-item',

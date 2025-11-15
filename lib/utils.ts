@@ -24,17 +24,17 @@ export function getFileType(fileName: string) {
     bmp: 'image',
     tiff: 'image',
     // video
-    mp4: 'video',
-    mov: 'video',
-    webm: 'video',
-    mkv: 'video',
-    avi: 'video',
+    mp4: 'media',
+    mov: 'media',
+    webm: 'media',
+    mkv: 'media',
+    avi: 'media',
     // audio
-    mp3: 'audio',
-    wav: 'audio',
-    ogg: 'audio',
-    m4a: 'audio',
-    flac: 'audio',
+    mp3: 'media',
+    wav: 'media',
+    ogg: 'media',
+    m4a: 'media',
+    flac: 'media',
     // documents / text
     pdf: 'document',
     doc: 'document',
@@ -43,27 +43,13 @@ export function getFileType(fileName: string) {
     xlsx: 'document',
     ppt: 'document',
     pptx: 'document',
-    txt: 'text',
-    md: 'text',
-    csv: 'text',
-    // code
-    js: 'code',
-    jsx: 'code',
-    ts: 'code',
-    tsx: 'code',
-    json: 'code',
-    html: 'code',
-    css: 'code',
-    // archives
-    zip: 'archive',
-    rar: 'archive',
-    '7z': 'archive',
-    tar: 'archive',
-    gz: 'archive',
+    txt: 'document',
+    md: 'document',
+    csv: 'document',
   }
 
   return {
-    type: extension ? (map[extension] ?? 'unknown') : 'unknown',
+    type: extension ? (map[extension] ?? 'other') : 'other',
     extension,
   }
 }
@@ -188,4 +174,19 @@ export const formatDateTime = (isoString: string | null | undefined) => {
 
 export const constructDownloadUrl = (bucketFileId: string) => {
   return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/download?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT}`
+}
+
+export const getFileTypesParams = (type: string) => {
+  switch (type) {
+    case 'documents':
+      return ['document']
+    case 'images':
+      return ['image']
+    case 'media':
+      return ['video', 'audio']
+    case 'others':
+      return ['other']
+    default:
+      return ['document']
+  }
 }
