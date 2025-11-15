@@ -5,12 +5,14 @@ import FileCard from '@/components/FileCard'
 import { getFileTypesParams } from '@/lib/utils'
 import { FileType } from 'next/dist/lib/file-exists'
 
-async function Page({ params }: SearchParamProps) {
+async function Page({ searchParams, params }: SearchParamProps) {
   console.log('hert')
   const type = ((await params)?.type as string) || ''
-  console.log(type)
+  const searchText = ((await searchParams)?.query as string) || ''
+  const sort = ((await searchParams)?.sort as string) || ''
+
   const types = getFileTypesParams(type) as FileType[]
-  const files = await getFiles({ types })
+  const files = await getFiles({ types, searchText, sort })
   return (
     <div className="page-container">
       <section className="w-full">
