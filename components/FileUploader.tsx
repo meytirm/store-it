@@ -15,7 +15,6 @@ function FileUploader({ ownerId, accountId, className }: Props) {
   const path = usePathname()
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
-      console.log(ownerId)
       setFiles(acceptedFiles)
       const uploadPromises = acceptedFiles.map(async (file) => {
         if (file.size > MAX_FILE_SIZE) {
