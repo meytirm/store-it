@@ -9,6 +9,7 @@ import Thumbnail from '@/components/Thumbnail'
 import FormattedDateTime from '@/components/FormattedDateTime'
 import { useDebounce } from 'use-debounce'
 import Loading from '@/components/Loading'
+import * as NProgress from 'nprogress'
 
 function Search() {
   const [query, setQuery] = useState('')
@@ -53,7 +54,13 @@ function Search() {
     setOpen(false)
     setResults([])
 
+    NProgress.start()
+
     router.push(`/${file.type + 's'}?query=${query}`)
+
+    setTimeout(() => {
+      NProgress.done()
+    }, 500)
   }
 
   return (

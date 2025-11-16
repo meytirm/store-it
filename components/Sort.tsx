@@ -8,13 +8,20 @@ import {
 } from '@/components/ui/select'
 import { usePathname, useRouter } from 'next/navigation'
 import { sortTypes } from '@/constants'
+import * as NProgress from 'nprogress'
 
 function Sort() {
   const path = usePathname()
   const router = useRouter()
 
   const handleSort = (value: string) => {
+    NProgress.start()
+
     router.push(`${path}?sort=${value}`)
+
+    setTimeout(() => {
+      NProgress.done()
+    }, 500)
   }
   return (
     <Select onValueChange={handleSort} defaultValue={sortTypes[0].value}>
