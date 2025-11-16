@@ -142,15 +142,12 @@ export const formatDateTime = (isoString: string | null | undefined) => {
 
   const date = new Date(isoString)
 
-  // Get hours and adjust for 12-hour format
   let hours = date.getHours()
   const minutes = date.getMinutes()
   const period = hours >= 12 ? 'pm' : 'am'
 
-  // Convert hours to 12-hour format
   hours = hours % 12 || 12
 
-  // Format the time and date parts
   const time = `${hours}:${minutes.toString().padStart(2, '0')}${period}`
   const day = date.getDate()
   const monthNames = [
@@ -189,4 +186,10 @@ export const getFileTypesParams = (type: string) => {
     default:
       return ['document']
   }
+}
+
+export const calculatePercentage = (sizeInBytes: number) => {
+  const totalSizeInBytes = 2 * 1024 * 1024 * 1024 // 2GB in bytes
+  const percentage = (sizeInBytes / totalSizeInBytes) * 100
+  return Number(percentage.toFixed(2))
 }
