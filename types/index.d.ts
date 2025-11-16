@@ -37,3 +37,19 @@ export interface RenameFileProps {
   extension: string
   path: string
 }
+
+interface FileCategoryInfo {
+  size: number
+  latestDate: string
+}
+
+export interface TotalSpace {
+  image: FileCategoryInfo
+  document: FileCategoryInfo
+  video: FileCategoryInfo
+  audio: FileCategoryInfo
+  other: FileCategoryInfo
+
+  used: number
+  all: number
+}
