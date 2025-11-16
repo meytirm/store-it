@@ -61,9 +61,9 @@ const Dashboard = async () => {
       {/* Recent files uploaded */}
       <section className="dashboard-recent-files">
         <h2 className="h3 xl:h2 text-light-100">Recent files uploaded</h2>
-        {files.documents.length > 0 ? (
+        {files.rows.length > 0 ? (
           <ul className="mt-5 flex flex-col gap-5">
-            {files.documents.map((file: FileInterface) => (
+            {files.rows.map((file: FileInterface) => (
               <Link
                 href={file.url}
                 target="_blank"
