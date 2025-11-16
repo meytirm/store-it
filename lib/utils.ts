@@ -142,15 +142,12 @@ export const formatDateTime = (isoString: string | null | undefined) => {
 
   const date = new Date(isoString)
 
-  // Get hours and adjust for 12-hour format
   let hours = date.getHours()
   const minutes = date.getMinutes()
   const period = hours >= 12 ? 'pm' : 'am'
 
-  // Convert hours to 12-hour format
   hours = hours % 12 || 12
 
-  // Format the time and date parts
   const time = `${hours}:${minutes.toString().padStart(2, '0')}${period}`
   const day = date.getDate()
   const monthNames = [
@@ -189,4 +186,46 @@ export const getFileTypesParams = (type: string) => {
     default:
       return ['document']
   }
+}
+
+export const calculatePercentage = (sizeInBytes: number) => {
+  const totalSizeInBytes = 2 * 1024 * 1024 * 1024 // 2GB in bytes
+  const percentage = (sizeInBytes / totalSizeInBytes) * 100
+  return Number(percentage.toFixed(2))
+}
+
+export const getUsageSummary = (totalSpace: any) => {
+  return [
+    {
+      title: 'Documents',
+      size: totalSpace.document.size,
+      latestDate: totalSpace.document.latestDate,
+      icon: '/assets/icons/file-document-light.svg',
+      url: '/documents',
+    },
+    {
+      title: 'Images',
+      size: totalSpace.image.size,
+      latestDate: totalSpace.image.latestDate,
+      icon: '/assets/icons/file-image-light.svg',
+      url: '/images',
+    },
+    {
+      title: 'Media',
+      size: totalSpace.video.size + totalSpace.audio.size,
+      latestDate:
+        totalSpace.video.latestDate > totalSpace.audio.latestDate
+          ? totalSpace.video.latestDate
+          : totalSpace.audio.latestDate,
+      icon: '/assets/icons/file-video-light.svg',
+      url: '/media',
+    },
+    {
+      title: 'Others',
+      size: totalSpace.other.size,
+      latestDate: totalSpace.other.latestDate,
+      icon: '/assets/icons/file-other-light.svg',
+      url: '/others',
+    },
+  ]
 }
