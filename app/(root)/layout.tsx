@@ -6,6 +6,8 @@ import { getCurrentUser } from '@/lib/actions/user.actions'
 import { redirect } from 'next/navigation'
 import { Toaster } from '@/components/ui/sonner'
 
+export const dynamic = 'force-dynamic'
+
 async function Layout({ children }: Props) {
   const currentUser = await getCurrentUser()
   if (!currentUser) {
