@@ -80,7 +80,7 @@ function ActionDropdown({ file }: { file: FileInterface }) {
     if (!action) return null
     const { value, label } = action
     return (
-      <DialogContent className="shad-dialog button">
+      <DialogContent className="shad-dialog button !bg-white">
         <DialogHeader className="flex flex-col gap-3">
           <DialogTitle className="text-center text-light-100">
             {label}
