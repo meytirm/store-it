@@ -8,6 +8,7 @@ import { FileInterface } from '@/types'
 import Thumbnail from '@/components/Thumbnail'
 import FormattedDateTime from '@/components/FormattedDateTime'
 import { useDebounce } from 'use-debounce'
+import Loading from '@/components/Loading'
 
 function Search() {
   const [query, setQuery] = useState('')
@@ -18,17 +19,26 @@ function Search() {
   const router = useRouter()
   const path = usePathname()
   const [debouncedQuery] = useDebounce(query, 300)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const fetchFiles = async () => {
+      setIsLoading(true)
       if (debouncedQuery.length === 0) {
         setResults([])
         setOpen(false)
+        setIsLoading(false)
         return router.push(path.replace(searchParms.toString(), ''))
       }
-      const files = await getFiles({ types: [], searchText: query })
-      setResults(files.rows)
-      setOpen(true)
+      try {
+        const files = await getFiles({ types: [], searchText: query })
+        setResults(files.rows)
+        setOpen(true)
+      } catch (error) {
+        console.error('Error fetching files:', error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     fetchFiles()
@@ -49,12 +59,16 @@ function Search() {
   return (
     <div className="search">
       <div className="search-input-wrapper">
-        <Image
-          src="/assets/icons/search.svg"
-          alt="Search"
-          width={24}
-          height={24}
-        />
+        {isLoading ? (
+          <Loading isLoading={true} isDark={false} />
+        ) : (
+          <Image
+            src="/assets/icons/search.svg"
+            alt="Search"
+            width={24}
+            height={24}
+          />
+        )}
         <Input
           value={query}
           placeholder="Search..."
