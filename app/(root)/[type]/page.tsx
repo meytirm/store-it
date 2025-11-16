@@ -6,7 +6,6 @@ import { getFileTypesParams } from '@/lib/utils'
 import { FileType } from 'next/dist/lib/file-exists'
 
 async function Page({ searchParams, params }: SearchParamProps) {
-  console.log('hert')
   const type = ((await params)?.type as string) || ''
   const searchText = ((await searchParams)?.query as string) || ''
   const sort = ((await searchParams)?.sort as string) || ''
