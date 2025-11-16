@@ -45,7 +45,7 @@ function MobileNavigation({
             height={30}
           />
         </SheetTrigger>
-        <SheetContent className="shad-sheet h-screen px-3">
+        <SheetContent className="shad-sheet h-screen px-3 bg-white">
           <SheetHeader>
             <SheetTitle>
               <div className="header-user">
