@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { FileType } from 'next/dist/lib/file-exists'
+import { TotalSpace } from '@/types'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -194,7 +195,7 @@ export const calculatePercentage = (sizeInBytes: number) => {
   return Number(percentage.toFixed(2))
 }
 
-export const getUsageSummary = (totalSpace: any) => {
+export const getUsageSummary = (totalSpace: TotalSpace) => {
   return [
     {
       title: 'Documents',
