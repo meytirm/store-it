@@ -11,7 +11,7 @@ const ImageThumbnail = ({ file }: { file: FileInterface }) => (
   <div className="file-details-thumbnail">
     <Thumbnail type={file.type} extension={file.extension} url={file.url} />
     <div className="flex flex-col">
-      <p className="subtitle-2 mb-1">{file.name}</p>
+      <p className="subtitle-2 mb-1 break-words w-[200px]">{file.name}</p>
       <FormattedDateTime date={file.$createdAt} className="caption" />
     </div>
   </div>
