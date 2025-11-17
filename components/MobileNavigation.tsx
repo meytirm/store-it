@@ -8,7 +8,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Separator } from '@/components/ui/separator'
 import { navItems } from '@/constants'
@@ -27,6 +27,10 @@ function MobileNavigation({
 }: Props) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
+
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
   return (
     <header className="mobile-header">
       <Image
@@ -68,11 +72,11 @@ function MobileNavigation({
                 {navItems.map(({ url, name, icon }) => {
                   const active = pathname === url
                   return (
-                    <Link href={name} key={url} className="lg:w-full">
+                    <Link href={url} key={name} className="lg:w-full">
                       <li
                         className={cn(
                           'mobile-nav-item',
-                          pathname === url && 'shad-active',
+                          active && 'shad-active',
                         )}
                       >
                         <Image
@@ -82,7 +86,7 @@ function MobileNavigation({
                           height={24}
                           className={cn(
                             'nav-icon',
-                            pathname === url && 'nav-icon-active',
+                            active && 'nav-icon-active',
                           )}
                         />
                         <p>{name}</p>
@@ -124,4 +128,5 @@ interface Props {
   accountId: string
   fullName: string
   email: string
+  onCloseNavigation: () => void
 }
